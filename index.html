@@ -71,18 +71,18 @@ html,body{height:100%;width:100%;margin:0;overflow:hidden;background:var(--night
 .btn span{display:block;font-size:32px;line-height:1}
 .btn em{display:block;font-style:normal;font-family:var(--body);font-weight:800;font-size:12px;margin-top:-4px}
 .btn.on{transform:scale(.92);filter:brightness(1.2)}
-/* A (jump) is the biggest and sits where the thumb rests; B (attack) to its lower left; C (throw) above A */
-#btnA{width:94px;height:94px;background:#2f6fe0;right:calc(env(safe-area-inset-right,0px) + 22px);bottom:calc(env(safe-area-inset-bottom,0px) + 100px)}
-#btnB{width:78px;height:78px;background:#25a35a;right:calc(env(safe-area-inset-right,0px) + 132px);bottom:calc(env(safe-area-inset-bottom,0px) + 36px)}
-#btnC{width:70px;height:70px;background:#b5523b;right:calc(env(safe-area-inset-right,0px) + 34px);bottom:calc(env(safe-area-inset-bottom,0px) + 214px)}
+/* bottom row: B (attack) then A (jump) in the corner, centers level; C (throw) directly above A */
+#btnA{width:94px;height:94px;background:#2f6fe0;right:calc(env(safe-area-inset-right,0px) + 20px);bottom:calc(env(safe-area-inset-bottom,0px) + 32px)}
+#btnB{width:78px;height:78px;background:#25a35a;right:calc(env(safe-area-inset-right,0px) + 124px);bottom:calc(env(safe-area-inset-bottom,0px) + 40px)}
+#btnC{width:70px;height:70px;background:#b5523b;right:calc(env(safe-area-inset-right,0px) + 32px);bottom:calc(env(safe-area-inset-bottom,0px) + 136px)}
 #btnC svg{display:block;margin:0 auto}
 #btnC .cnt{position:absolute;right:-6px;top:-6px;min-width:28px;height:28px;border-radius:14px;background:var(--gold);color:var(--ink);
   border:3px solid var(--ink);font:400 16px/22px var(--display);text-align:center;box-sizing:border-box}
 .btn.empty{opacity:.45}
 @media (orientation:landscape) and (max-height:520px){
-  #btnA{width:86px;height:86px;right:calc(env(safe-area-inset-right,0px) + 24px);bottom:calc(env(safe-area-inset-bottom,0px) + 70px)}
-  #btnB{width:72px;height:72px;right:calc(env(safe-area-inset-right,0px) + 124px);bottom:calc(env(safe-area-inset-bottom,0px) + 16px)}
-  #btnC{width:64px;height:64px;right:calc(env(safe-area-inset-right,0px) + 132px);bottom:calc(env(safe-area-inset-bottom,0px) + 108px)}
+  #btnA{width:86px;height:86px;right:calc(env(safe-area-inset-right,0px) + 22px);bottom:calc(env(safe-area-inset-bottom,0px) + 16px)}
+  #btnB{width:72px;height:72px;right:calc(env(safe-area-inset-right,0px) + 120px);bottom:calc(env(safe-area-inset-bottom,0px) + 23px)}
+  #btnC{width:64px;height:64px;right:calc(env(safe-area-inset-right,0px) + 33px);bottom:calc(env(safe-area-inset-bottom,0px) + 112px)}
 }
 
 /* menu */
@@ -278,6 +278,8 @@ const sfx={
   pound:()=>tone(130,0.28,'triangle',0.14,0,45),
   spin:()=>tone(420,0.22,'triangle',0.05,0,950),
   pick:()=>[660,880,1320].forEach((f,i)=>tone(f,0.12,'triangle',0.06,i*0.05)),
+  press:()=>{ tone(988,0.07,'square',0.05); tone(1480,0.16,'square',0.05,0.07); },
+  go:()=>[784,988,1175,1568].forEach((f,i)=>tone(f,i===3?0.22:0.08,'square',0.05,i*0.06)),   // "あそぶ / つづける"   // "決定" blip for taps on the title
   whoosh:()=>tone(900,0.2,'sawtooth',0.03,0,260),
   clink:()=>{ tone(2100,0.12,'square',0.04); tone(2900,0.18,'triangle',0.04,0.04); tone(1600,0.2,'triangle',0.03,0.08); }
 };
@@ -1783,7 +1785,7 @@ function openMenu(kind){
     initAudio();
     if(!primed&&musicOn&&!wasPlaying){
       // sound was not allowed until this tap: let the title screen play its music first
-      primed=true;
+      primed=true; sfx.press();
       $('titleHint').textContent=window.TITLE_MP3?'もう一度タップでスタート':'音楽を読み込み中… タップでスタート';
       if(!window.TITLE_MP3) addEventListener('musicdata',()=>{ if(!done) $('titleHint').textContent='もう一度タップでスタート'; },{once:true});
       return;
@@ -1798,7 +1800,7 @@ function openMenu(kind){
 })();
 function closeMenu(){ $('menu').hidden=true; state='play'; initAudio(); setGameUi(true); if(matchMedia('(pointer: coarse)').matches) $('touch').hidden=false; }
 function togglePause(){ if(state==='play') openMenu('pause'); else if(state==='pause') closeMenu(); }
-$('startBtn').addEventListener('click',closeMenu);
+$('startBtn').addEventListener('click',()=>{ initAudio(); sfx.go(); closeMenu(); });
 $('pauseBtn').addEventListener('click',e=>{ e.stopPropagation(); togglePause(); });
 $('pauseBtn').addEventListener('pointerdown',e=>e.stopPropagation());
 function soundLabel(){ $('soundBtn').textContent='効果音：'+(soundOn?'ON':'OFF'); $('bgmBtn').textContent='BGM：'+(musicOn?'ON':'OFF'); $('charBtn').textContent='キャラ：'+CHAR_LABEL[charMode]; }
