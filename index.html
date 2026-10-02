@@ -21,8 +21,9 @@
   color-scheme:dark;
 }
 [hidden]{display:none!important}
-/* pin the page: in-app browsers (LINE, Threads, Instagram...) otherwise drag the whole page along with the stick */
-html{position:fixed;inset:0;overflow:hidden;overscroll-behavior:none}
+/* no page bounce/scroll (in-app browsers); the drags themselves are cancelled in script. <html> is NOT position:fixed,
+   which stopped iOS from re-laying the page out after rotating to landscape */
+html{overflow:hidden;overscroll-behavior:none}
 html,body{height:100%;width:100%;margin:0;overflow:hidden;background:var(--night);color:var(--paper);
   font-family:var(--body);touch-action:none;user-select:none;-webkit-user-select:none;
   -webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;overscroll-behavior:none}
@@ -42,6 +43,9 @@ html,body{height:100%;width:100%;margin:0;overflow:hidden;background:var(--night
 #topRight{position:fixed;top:0;right:0;display:flex;align-items:center;gap:12px;
   padding:calc(env(safe-area-inset-top,0px) + 10px) calc(env(safe-area-inset-right,0px) + 16px) 0 0}
 #hearts{font-size:26px;letter-spacing:2px;color:var(--red);pointer-events:none}
+#hTokWrap{position:fixed;right:calc(env(safe-area-inset-right,0px) + 72px);top:calc(env(safe-area-inset-top,0px) + 50px);display:flex;align-items:center;gap:6px;
+  pointer-events:none;font-family:var(--display);font-size:20px;line-height:1;font-variant-numeric:tabular-nums}
+#hTokWrap small{font-size:13px}
 #hearts .empty{color:#5b5566}
 .round{width:44px;height:44px;border-radius:50%;border:3px solid var(--ink);background:var(--paper);color:var(--ink);
   font-family:var(--display);font-size:16px;display:grid;place-items:center;cursor:pointer;touch-action:none}
@@ -58,24 +62,24 @@ html,body{height:100%;width:100%;margin:0;overflow:hidden;background:var(--night
   background:rgba(255,246,223,.18);border:3px solid rgba(255,246,223,.55);transition:opacity .2s}
 #stickKnob{position:absolute;left:50%;top:50%;width:56px;height:56px;margin:-28px 0 0 -28px;border-radius:50%;
   background:var(--paper);border:3px solid var(--ink)}
-.btn::after{content:'';position:absolute;inset:-18px;border-radius:50%}
+.btn::after{content:'';position:absolute;inset:-16px;border-radius:50%}
 .btn{position:absolute;pointer-events:auto;border-radius:50%;border:4px solid var(--ink);font-family:var(--display);
   color:var(--paper);display:grid;place-items:center;touch-action:none;cursor:pointer;padding:0}
-.btn span{display:block;font-size:38px;line-height:1}
-.btn em{display:block;font-style:normal;font-family:var(--body);font-weight:800;font-size:13px;margin-top:-4px}
+.btn span{display:block;font-size:32px;line-height:1}
+.btn em{display:block;font-style:normal;font-family:var(--body);font-weight:800;font-size:12px;margin-top:-4px}
 .btn.on{transform:scale(.92);filter:brightness(1.2)}
 /* A (jump) is the biggest and sits where the thumb rests; B (attack) to its lower left; C (throw) above A */
-#btnA{width:116px;height:116px;background:#2f6fe0;right:calc(env(safe-area-inset-right,0px) + 18px);bottom:calc(env(safe-area-inset-bottom,0px) + 108px)}
-#btnB{width:96px;height:96px;background:#25a35a;right:calc(env(safe-area-inset-right,0px) + 148px);bottom:calc(env(safe-area-inset-bottom,0px) + 36px)}
-#btnC{width:88px;height:88px;background:#b5523b;right:calc(env(safe-area-inset-right,0px) + 32px);bottom:calc(env(safe-area-inset-bottom,0px) + 250px)}
+#btnA{width:94px;height:94px;background:#2f6fe0;right:calc(env(safe-area-inset-right,0px) + 22px);bottom:calc(env(safe-area-inset-bottom,0px) + 100px)}
+#btnB{width:78px;height:78px;background:#25a35a;right:calc(env(safe-area-inset-right,0px) + 132px);bottom:calc(env(safe-area-inset-bottom,0px) + 36px)}
+#btnC{width:70px;height:70px;background:#b5523b;right:calc(env(safe-area-inset-right,0px) + 34px);bottom:calc(env(safe-area-inset-bottom,0px) + 214px)}
 #btnC svg{display:block;margin:0 auto}
 #btnC .cnt{position:absolute;right:-6px;top:-6px;min-width:28px;height:28px;border-radius:14px;background:var(--gold);color:var(--ink);
   border:3px solid var(--ink);font:400 16px/22px var(--display);text-align:center;box-sizing:border-box}
 .btn.empty{opacity:.45}
 @media (orientation:landscape) and (max-height:520px){
-  #btnA{width:106px;height:106px;right:calc(env(safe-area-inset-right,0px) + 22px);bottom:calc(env(safe-area-inset-bottom,0px) + 80px)}
-  #btnB{width:90px;height:90px;right:calc(env(safe-area-inset-right,0px) + 142px);bottom:calc(env(safe-area-inset-bottom,0px) + 16px)}
-  #btnC{width:80px;height:80px;right:calc(env(safe-area-inset-right,0px) + 154px);bottom:calc(env(safe-area-inset-bottom,0px) + 132px)}
+  #btnA{width:86px;height:86px;right:calc(env(safe-area-inset-right,0px) + 24px);bottom:calc(env(safe-area-inset-bottom,0px) + 70px)}
+  #btnB{width:72px;height:72px;right:calc(env(safe-area-inset-right,0px) + 124px);bottom:calc(env(safe-area-inset-bottom,0px) + 16px)}
+  #btnC{width:64px;height:64px;right:calc(env(safe-area-inset-right,0px) + 132px);bottom:calc(env(safe-area-inset-bottom,0px) + 108px)}
 }
 
 /* menu */
@@ -147,9 +151,9 @@ h2{margin:0;font-family:var(--display);font-weight:400;font-size:30px}
 <div id="hud" class="out">
   <div class="stat"><span class="ic-star">★</span><b id="hStars">0</b><small>/10</small></div>
   <div class="stat"><span class="ic-coin"></span><b id="hCoins">0</b></div>
-  <div class="stat" id="hTokWrap" hidden><svg viewBox="0 0 24 32" width="18" height="24" aria-hidden="true"><path d="M10 2h4v3c0 2 1 3 2 5 3 3 5 6 5 10 0 6-4 10-9 10S3 26 3 20c0-4 2-7 5-10 1-2 2-3 2-5z" fill="#f3ecdc" stroke="#1c1a2b" stroke-width="2"/><path d="M4 18h16v4H4z" fill="#2c4a8a"/></svg><b id="hTok">0</b><small>/5</small></div>
   <div class="stat" id="hRedWrap" hidden><span class="ic-coin red"></span><b id="hRed">0</b><small>/8</small></div>
 </div>
+<div id="hTokWrap" class="out" hidden><svg viewBox="0 0 24 32" width="18" height="24" aria-hidden="true"><path d="M10 2h4v3c0 2 1 3 2 5 3 3 5 6 5 10 0 6-4 10-9 10S3 26 3 20c0-4 2-7 5-10 1-2 2-3 2-5z" fill="#f3ecdc" stroke="#1c1a2b" stroke-width="2"/><path d="M4 18h16v4H4z" fill="#2c4a8a"/></svg><b id="hTok">0</b><small>/5</small></div>
 <div id="topRight">
   <div id="hearts" class="out"></div>
   <button id="pauseBtn" class="round" aria-label="ポーズ">II</button>
@@ -1778,7 +1782,7 @@ soundLabel();
 $('bgmBtn').addEventListener('click',()=>{ initAudio(); musicOn=!musicOn; soundLabel(); try{ localStorage.setItem('kuroneko64-bgm',musicOn?'on':'off'); }catch(e){} });
 $('charBtn').addEventListener('click',()=>{ charMode=CHAR_MODES[(CHAR_MODES.indexOf(charMode)+1)%CHAR_MODES.length]; soundLabel(); try{ localStorage.setItem('kuroneko64-char3',charMode); }catch(e){} });
 let figReturn='menu';
-function setGameUi(show){ $('hud').hidden=!show; $('topRight').hidden=!show; $('minimap').hidden=!show; if(!show) $('touch').hidden=true; else if(matchMedia('(pointer: coarse)').matches) $('touch').hidden=false; }
+function setGameUi(show){ $('hud').hidden=!show; $('topRight').hidden=!show; $('minimap').hidden=!show; $('hTokWrap').hidden=!show||!P.tok; if(!show) $('touch').hidden=true; else if(matchMedia('(pointer: coarse)').matches) $('touch').hidden=false; }
 $('figBtn').addEventListener('click',()=>{ initAudio(); figReturn=state; state='figure'; $('menu').hidden=true; $('figUi').hidden=false; setGameUi(false); });
 $('figClose').addEventListener('click',()=>{ $('figUi').hidden=true; setGameUi(true); drag.id=null; openMenu(figReturn); });
 $('soundBtn').addEventListener('click',()=>{ soundOn=!soundOn; soundLabel(); try{ localStorage.setItem('kuroneko64-sound',soundOn?'on':'off'); }catch(e){} });
