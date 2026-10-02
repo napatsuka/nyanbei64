@@ -52,13 +52,19 @@ html,body{height:100%;margin:0;overflow:hidden;background:var(--night);color:var
   background:rgba(255,246,223,.18);border:3px solid rgba(255,246,223,.55);transition:opacity .2s}
 #stickKnob{position:absolute;left:50%;top:50%;width:56px;height:56px;margin:-28px 0 0 -28px;border-radius:50%;
   background:var(--paper);border:3px solid var(--ink)}
+.btn::after{content:'';position:absolute;inset:-14px;border-radius:50%}
 .btn{position:absolute;pointer-events:auto;border-radius:50%;border:4px solid var(--ink);font-family:var(--display);
   color:var(--paper);display:grid;place-items:center;touch-action:none;cursor:pointer;padding:0}
 .btn span{display:block;font-size:30px;line-height:1}
 .btn em{display:block;font-style:normal;font-family:var(--body);font-weight:800;font-size:11px;margin-top:-6px}
 .btn.on{transform:scale(.92);filter:brightness(1.2)}
-#btnA{width:86px;height:86px;background:#2f6fe0;right:calc(env(safe-area-inset-right,0px) + 22px);bottom:calc(env(safe-area-inset-bottom,0px) + 34px)}
-#btnB{width:66px;height:66px;background:#25a35a;right:calc(env(safe-area-inset-right,0px) + 122px);bottom:calc(env(safe-area-inset-bottom,0px) + 22px)}
+#btnA{width:96px;height:96px;background:#2f6fe0;right:calc(env(safe-area-inset-right,0px) + 26px);bottom:calc(env(safe-area-inset-bottom,0px) + 104px)}
+#btnB{width:80px;height:80px;background:#25a35a;right:calc(env(safe-area-inset-right,0px) + 132px);bottom:calc(env(safe-area-inset-bottom,0px) + 44px)}
+.btn span{font-size:34px}
+@media (orientation:landscape) and (max-height:520px){
+  #btnA{width:88px;height:88px;right:calc(env(safe-area-inset-right,0px) + 30px);bottom:calc(env(safe-area-inset-bottom,0px) + 74px)}
+  #btnB{width:74px;height:74px;right:calc(env(safe-area-inset-right,0px) + 132px);bottom:calc(env(safe-area-inset-bottom,0px) + 22px)}
+}
 
 /* menu */
 .overlay{position:fixed;inset:0;display:grid;place-items:center;padding:16px;
@@ -241,11 +247,23 @@ function canvasTex(size,draw,rep){
   const c=document.createElement('canvas'); c.width=c.height=size; draw(c.getContext('2d'),size);
   const t=new THREE.CanvasTexture(c); t.wrapS=t.wrapT=THREE.RepeatWrapping; if(rep) t.repeat.set(rep,rep); t.anisotropy=4; return t;
 }
+// Size the view from the game container itself. Phones report the new size late after a rotation, so
+// re-measure a few times after 'orientationchange' and also follow visualViewport / ResizeObserver.
 function resize(){
-  const w=innerWidth,h=innerHeight;
-  renderer.setSize(w,h); camera.aspect=w/h; camera.fov=w<h?74:58; camera.updateProjectionMatrix();
+  const el=$('game'), w=el.clientWidth||innerWidth, h=el.clientHeight||innerHeight;
+  if(!w||!h) return;
+  renderer.setSize(w,h,false); camera.aspect=w/h; camera.fov=w<h?74:58; camera.updateProjectionMatrix();
+  try{ stickRest(); cam.dist=(w>h&&h<520)?9:11.5; }catch(e){}   // the touch stick and camera are set up later in the script
 }
-addEventListener('resize',resize); resize();
+addEventListener('resize',resize);
+addEventListener('orientationchange',()=>{
+  [80,250,600,1000].forEach(t=>setTimeout(resize,t));
+  // fingers lifted mid-rotation never send pointerup: clear the stick and camera drag, and put the camera back behind Nyanbee
+  if(typeof stick!=='undefined'){ stick.id=null; stick.x=stick.y=0; drag.id=null; cam.yaw=P.face+Math.PI; cam.lastDrag=-9; }
+});
+if(window.visualViewport) visualViewport.addEventListener('resize',resize);
+if(window.ResizeObserver) new ResizeObserver(resize).observe($('game'));
+resize();
 
 scene.add(new THREE.HemisphereLight(0xe6f6ff,0x4f7a3a,0.78));
 const sun=new THREE.DirectionalLight(0xfff0d0,0.82);
@@ -912,7 +930,7 @@ addEventListener('keyup',e=>{ keys[e.code]=false; });
 addEventListener('blur',()=>{ for(const k in keys) keys[k]=false; });
 
 const zone=$('game'), base=$('stickBase'), knob=$('stickKnob');
-function stickRest(){ base.style.left=`calc(env(safe-area-inset-left,0px) + 92px)`; base.style.top=`calc(100% - env(safe-area-inset-bottom,0px) - 92px)`; base.style.opacity='0.6'; knob.style.transform=''; }
+function stickRest(){ const land=innerWidth>innerHeight&&innerHeight<520; base.style.left=`calc(env(safe-area-inset-left,0px) + ${land?100:96}px)`; base.style.top=`calc(100% - env(safe-area-inset-bottom,0px) - ${land?104:150}px)`; base.style.opacity='0.6'; knob.style.transform=''; }
 stickRest();
 function showTouch(){ $('touch').hidden=false; }
 if(matchMedia('(pointer: coarse)').matches) showTouch();
