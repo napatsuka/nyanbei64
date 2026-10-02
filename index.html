@@ -52,18 +52,24 @@ html,body{height:100%;margin:0;overflow:hidden;background:var(--night);color:var
   background:rgba(255,246,223,.18);border:3px solid rgba(255,246,223,.55);transition:opacity .2s}
 #stickKnob{position:absolute;left:50%;top:50%;width:56px;height:56px;margin:-28px 0 0 -28px;border-radius:50%;
   background:var(--paper);border:3px solid var(--ink)}
-.btn::after{content:'';position:absolute;inset:-14px;border-radius:50%}
+.btn::after{content:'';position:absolute;inset:-18px;border-radius:50%}
 .btn{position:absolute;pointer-events:auto;border-radius:50%;border:4px solid var(--ink);font-family:var(--display);
   color:var(--paper);display:grid;place-items:center;touch-action:none;cursor:pointer;padding:0}
-.btn span{display:block;font-size:30px;line-height:1}
-.btn em{display:block;font-style:normal;font-family:var(--body);font-weight:800;font-size:11px;margin-top:-6px}
+.btn span{display:block;font-size:38px;line-height:1}
+.btn em{display:block;font-style:normal;font-family:var(--body);font-weight:800;font-size:13px;margin-top:-4px}
 .btn.on{transform:scale(.92);filter:brightness(1.2)}
-#btnA{width:96px;height:96px;background:#2f6fe0;right:calc(env(safe-area-inset-right,0px) + 26px);bottom:calc(env(safe-area-inset-bottom,0px) + 104px)}
-#btnB{width:80px;height:80px;background:#25a35a;right:calc(env(safe-area-inset-right,0px) + 132px);bottom:calc(env(safe-area-inset-bottom,0px) + 44px)}
-.btn span{font-size:34px}
+/* A (jump) is the biggest and sits where the thumb rests; B (attack) to its lower left; C (throw) above A */
+#btnA{width:116px;height:116px;background:#2f6fe0;right:calc(env(safe-area-inset-right,0px) + 18px);bottom:calc(env(safe-area-inset-bottom,0px) + 108px)}
+#btnB{width:96px;height:96px;background:#25a35a;right:calc(env(safe-area-inset-right,0px) + 148px);bottom:calc(env(safe-area-inset-bottom,0px) + 36px)}
+#btnC{width:88px;height:88px;background:#b5523b;right:calc(env(safe-area-inset-right,0px) + 32px);bottom:calc(env(safe-area-inset-bottom,0px) + 250px)}
+#btnC svg{display:block;margin:0 auto}
+#btnC .cnt{position:absolute;right:-6px;top:-6px;min-width:28px;height:28px;border-radius:14px;background:var(--gold);color:var(--ink);
+  border:3px solid var(--ink);font:400 16px/22px var(--display);text-align:center;box-sizing:border-box}
+.btn.empty{opacity:.45}
 @media (orientation:landscape) and (max-height:520px){
-  #btnA{width:88px;height:88px;right:calc(env(safe-area-inset-right,0px) + 30px);bottom:calc(env(safe-area-inset-bottom,0px) + 74px)}
-  #btnB{width:74px;height:74px;right:calc(env(safe-area-inset-right,0px) + 132px);bottom:calc(env(safe-area-inset-bottom,0px) + 22px)}
+  #btnA{width:106px;height:106px;right:calc(env(safe-area-inset-right,0px) + 22px);bottom:calc(env(safe-area-inset-bottom,0px) + 80px)}
+  #btnB{width:90px;height:90px;right:calc(env(safe-area-inset-right,0px) + 142px);bottom:calc(env(safe-area-inset-bottom,0px) + 16px)}
+  #btnC{width:80px;height:80px;right:calc(env(safe-area-inset-right,0px) + 154px);bottom:calc(env(safe-area-inset-bottom,0px) + 132px)}
 }
 
 /* menu */
@@ -113,6 +119,7 @@ h2{margin:0;font-family:var(--display);font-weight:400;font-size:30px}
 <div id="hud" class="out">
   <div class="stat"><span class="ic-star">★</span><b id="hStars">0</b><small>/10</small></div>
   <div class="stat"><span class="ic-coin"></span><b id="hCoins">0</b></div>
+  <div class="stat" id="hTokWrap" hidden><svg viewBox="0 0 24 32" width="18" height="24" aria-hidden="true"><path d="M10 2h4v3c0 2 1 3 2 5 3 3 5 6 5 10 0 6-4 10-9 10S3 26 3 20c0-4 2-7 5-10 1-2 2-3 2-5z" fill="#f3ecdc" stroke="#1c1a2b" stroke-width="2"/><path d="M4 18h16v4H4z" fill="#2c4a8a"/></svg><b id="hTok">0</b><small>/5</small></div>
   <div class="stat" id="hRedWrap" hidden><span class="ic-coin red"></span><b id="hRed">0</b><small>/8</small></div>
 </div>
 <div id="topRight">
@@ -125,6 +132,7 @@ h2{margin:0;font-family:var(--display);font-weight:400;font-size:30px}
 
 <div id="touch" hidden>
   <div id="stickBase"><div id="stickKnob"></div></div>
+  <button id="btnC" class="btn empty" aria-label="徳利をなげる"><div><svg viewBox="0 0 24 32" width="26" height="34" aria-hidden="true"><path d="M10 2h4v3c0 2 1 3 2 5 3 3 5 6 5 10 0 6-4 10-9 10S3 26 3 20c0-4 2-7 5-10 1-2 2-3 2-5z" fill="#f3ecdc" stroke="#1c1a2b" stroke-width="2"/><path d="M4 18h16v4H4z" fill="#2c4a8a"/></svg><em>なげる</em></div><b class="cnt" id="cCount">0</b></button>
   <button id="btnB" class="btn" aria-label="アクション"><div><span>B</span><em>アタック</em></div></button>
   <button id="btnA" class="btn" aria-label="ジャンプ"><div><span>A</span><em>ジャンプ</em></div></button>
 </div>
@@ -148,7 +156,9 @@ h2{margin:0;font-family:var(--display);font-weight:400;font-size:30px}
       <dt>スマホ</dt><dd>左側をなぞって移動・右側をなぞってカメラ・Aでジャンプ・Bでアタック</dd>
       <dt>PC</dt><dd>WASD/矢印で移動・Spaceでジャンプ・Shiftでアタック・Q/Eかドラッグでカメラ</dd>
       <dt>コツ</dt><dd>走りながらタイミングよく3回ジャンプで大ジャンプ。空中でBはヒップドロップ。</dd>
-      <dt>ボス</dt><dd>突進をかわすと大王がフラフラに。そのすきに頭をふむか、スピンで攻撃。</dd>
+      <dt>徳利</dt><dd>拾うと3本まで持てる（最大5本）。なげるボタン（PCはC）で投げて敵をやっつける。トゲボールも壊せる。</dd>
+      <dt>幅跳び</dt><dd>走りながらBでスライディング、すかさずAで遠くまで跳ぶ。</dd>
+      <dt>ボス</dt><dd>突進をかわすか徳利を当てると大王がフラフラに。そのすきに頭をふむか、スピンや徳利で攻撃。</dd>
     </dl>
     <div class="row">
       <button id="startBtn" class="primary">あそぶ</button>
@@ -208,7 +218,10 @@ const sfx={
   hurt:()=>tone(240,0.35,'sawtooth',0.06,0,80),
   stomp:()=>tone(160,0.15,'square',0.07,0,520),
   pound:()=>tone(130,0.28,'triangle',0.14,0,45),
-  spin:()=>tone(420,0.22,'triangle',0.05,0,950)
+  spin:()=>tone(420,0.22,'triangle',0.05,0,950),
+  pick:()=>[660,880,1320].forEach((f,i)=>tone(f,0.12,'triangle',0.06,i*0.05)),
+  whoosh:()=>tone(900,0.2,'sawtooth',0.03,0,260),
+  clink:()=>{ tone(2100,0.12,'square',0.04); tone(2900,0.18,'triangle',0.04,0.04); tone(1600,0.2,'triangle',0.03,0.08); }
 };
 
 /* ---------- BGM ---------- */
@@ -915,6 +928,8 @@ const jumpHeld=()=>keys.Space||keys.KeyK||keys.KeyZ||touchJump;
 function pressJump(){ if(state==='play') P.jumpBuf=0.15; }
 function pressAction(){
   if(state!=='play') return;
+  // running + B: a slide (it hits enemies); press A during it for a long jump
+  if(P.onGround&&!P.lj&&P.slide<=0&&P.spin<=0&&Math.hypot(P.vx,P.vz)>6){ P.slide=0.42; sfx.spin(); return; }
   if(!P.onGround&&!P.pound&&P.y-floorAt(P.x,P.z,P.y).h>1.2){ P.pound=true; P.poundT=0.25; P.vx=P.vz=0; P.vy=0; P.flip=0; sfx.spin(); }
   else if(P.onGround&&P.spin<=0){ P.spin=0.45; sfx.spin(); }
 }
@@ -923,6 +938,7 @@ addEventListener('keydown',e=>{
   keys[e.code]=true;
   if(['Space','KeyK','KeyZ'].includes(e.code)) pressJump();
   if(['ShiftLeft','ShiftRight','KeyJ','KeyX'].includes(e.code)) pressAction();
+  if(['KeyC','KeyL'].includes(e.code)) throwTok();
   if(e.code==='Escape'||e.code==='KeyP') togglePause();
   if(e.code==='Space'||e.code.startsWith('Arrow')) e.preventDefault();
 });
@@ -984,6 +1000,7 @@ function bindBtn(el,down,up){
 }
 bindBtn($('btnA'),()=>{ touchJump=true; pressJump(); },()=>{ touchJump=false; });
 bindBtn($('btnB'),pressAction);
+bindBtn($('btnC'),throwTok);
 document.addEventListener('contextmenu',e=>e.preventDefault());
 
 /* ---------- camera ---------- */
@@ -1017,7 +1034,7 @@ function hurt(fx,fz){
 function die(){
   toast('やられた…'); resetBoss(); P.health=3; respawnAt(SPAWN.x,H(SPAWN.x,SPAWN.z),SPAWN.z); P.face=Math.PI; cam.yaw=0; updateHud();
 }
-function respawnAt(x,y,z){ Object.assign(P,{x,y,z,vx:0,vy:0,vz:0,pound:false,flip:0,chain:0,hurtT:0,onGround:true}); P.inv=Math.max(P.inv,1.2); }
+function respawnAt(x,y,z){ Object.assign(P,{x,y,z,vx:0,vy:0,vz:0,pound:false,flip:0,chain:0,hurtT:0,onGround:true,slide:0,lj:false}); P.inv=Math.max(P.inv,1.2); }
 function killEnemy(e){
   if(e.dead) return; e.dead=true; kills++; burst(e.x,e.y+0.8,e.z,0xcfc8d8,12); addCoin(e.x,e.y+1.2,e.z);
   if(kills===enemies.length) activateStar(4); else toast(`ネズミ兵 ${kills}/${enemies.length}`);
@@ -1035,10 +1052,12 @@ function updatePlayer(dt){
   const sl=Math.hypot(sx,sy); if(sl>1){ sx/=sl; sy/=sl; }
   const fx=-Math.sin(cam.yaw), fz=-Math.cos(cam.yaw), rx=Math.cos(cam.yaw), rz=-Math.sin(cam.yaw);
   const dx=rx*sx+fx*sy, dz=rz*sx+fz*sy, mag=Math.hypot(dx,dz);
-  if(mag>0.08&&P.hurtT<=0&&!P.pound) P.face+=angDiff(Math.atan2(dx,dz),P.face)*Math.min(1,dt*(P.onGround?14:5));
+  if(mag>0.08&&P.hurtT<=0&&!P.pound&&P.slide<=0&&!P.lj) P.face+=angDiff(Math.atan2(dx,dz),P.face)*Math.min(1,dt*(P.onGround?14:5));
   const MAX=9.5;
   P.hurtT-=dt;
   if(P.pound){ P.vx=P.vz=0; }
+  else if(P.slide>0){ const k=Math.max(0,1-dt*2.2); P.vx*=k; P.vz*=k; }     // sliding: no steering, slowly losing speed
+  else if(P.lj){ }                                                          // long jump: committed to the leap
   else if(P.hurtT<=0){ const k=P.onGround?(mag>0.08?9:14):2.6; P.vx+=(dx*MAX-P.vx)*Math.min(1,dt*k); P.vz+=(dz*MAX-P.vz)*Math.min(1,dt*k); }
 
   // moving platforms carry the cat
@@ -1046,13 +1065,18 @@ function updatePlayer(dt){
 
   P.jumpBuf-=dt;
   if(P.onGround) P.landT+=dt; else P.coyote-=dt;
+  if(P.jumpBuf>0&&P.slide>0&&P.onGround){                                  // long jump out of the slide
+    P.vx=Math.sin(P.face)*17; P.vz=Math.cos(P.face)*17; P.vy=10.5; P.lj=true; P.slide=0; P.chain=0;
+    P.onGround=false; P.coyote=0; P.jumpBuf=0; P.stand=null; sfx.jump(2); burst(P.x,P.y+0.2,P.z,0xe8dcc0,6);
+  }
   if(P.jumpBuf>0&&(P.onGround||P.coyote>0)&&!P.pound&&P.hurtT<=0){
     const sp=Math.hypot(P.vx,P.vz);
     if(P.landT<0.22&&sp>4.5&&P.chain<3) P.chain++; else P.chain=1;
     P.vy=[0,13,16,20.5][P.chain]; P.onGround=false; P.coyote=0; P.jumpBuf=0; P.stand=null;
     if(P.chain===3){ P.flip=0.001; } sfx.jump(P.chain);
   }
-  let g=38; if(P.vy>0&&!jumpHeld()&&P.chain<3&&P.hurtT<=0) g=85;
+  let g=38; if(P.vy>0&&!jumpHeld()&&P.chain<3&&P.hurtT<=0&&!P.lj) g=85;
+  if(P.lj) g=30;
   if(P.pound){ P.poundT-=dt; P.vy=P.poundT>0?0:-32; g=0; }
   P.vy=Math.max(P.vy-g*dt,-32);
 
@@ -1066,7 +1090,7 @@ function updatePlayer(dt){
   }
   const f=floorAt(P.x,P.z,Math.max(prevY,P.y)), was=P.onGround;
   if(P.vy<=0&&(P.y<=f.h||(was&&P.y-f.h<0.55))){
-    if(!was){ P.landT=0; P.squash=0.18; if(P.pound){ P.pound=false; poundImpact(); } if(P.chain===3) P.chain=0; P.flip=0; }
+    if(!was){ P.landT=0; P.squash=0.18; if(P.lj){ P.lj=false; P.squash=0.24; burst(P.x,P.y+0.1,P.z,0xe8dcc0,6); } if(P.pound){ P.pound=false; poundImpact(); } if(P.chain===3) P.chain=0; P.flip=0; }
     P.y=f.h; P.vy=0; P.onGround=true; P.stand=f.obj; P.coyote=0.1;
   } else {
     if(P.y<f.h) P.y=f.h;
@@ -1078,7 +1102,7 @@ function updatePlayer(dt){
     burst(P.x,-0.3,P.z,0xbfe6ff,10); P.inv=0; P.health--; sfx.hurt(); updateHud();
     if(P.health<=0) die(); else { respawnAt(P.safe.x,P.safe.y+0.5,P.safe.z); toast('ザブーン！'); }
   }
-  P.inv-=dt; if(P.spin>0) P.spin-=dt;
+  P.inv-=dt; if(P.spin>0) P.spin-=dt; if(P.slide>0) P.slide-=dt; if(P.throwT>0) P.throwT-=dt;
 }
 
 function animateCat(dt){
@@ -1103,6 +1127,7 @@ function animateCat(dt){
   else if(P.pound&&P.poundT>0){ pivot.rotation.x=(1-P.poundT/0.25)*Math.PI*2; }
   else pivot.rotation.x=0;
   pivot.rotation.y=P.spin>0?(1-P.spin/0.45)*Math.PI*4:0;
+  if(P.lj) pivot.rotation.x=1.1; else if(P.slide>0) pivot.rotation.x=0.5;
   if(P.squash>0) P.squash-=dt;
   const q=P.squash>0?P.squash/0.18:0; cat.scale.set(1+q*0.18,1-q*0.22,1+q*0.18);
   cat.visible=!(P.inv>0&&Math.floor(clock*18)%2===0);
@@ -1298,6 +1323,8 @@ function animatePhoto(dt){
   if(P.flip>0) rx=Math.min(P.flip,Math.PI*2);
   else if(P.pound&&P.poundT>0) rx=(1-P.poundT/0.25)*Math.PI*2;
   if(P.spin>0) ry=(1-P.spin/0.45)*Math.PI*4;
+  if(P.slide>0){ rx=0.55; sy*=0.86; }
+  if(P.lj) rx=1.15;                                   // stretched-out dive, like Mario's long jump
   photo.inner.position.y=PAPER_H/2*sy+bob;
   photo.inner.rotation.set(rx,ry,0);
   photo.inner.scale.set(sx,sy,sx);
@@ -1313,13 +1340,88 @@ function animatePhoto(dt){
     b.legR.rotation.set(-s*0.55*w,0,0); b.legL.rotation.set(s*0.55*w,0,0);
   }
   if(P.spin>0){ b.armR.rotation.set(0,0,-0.7); b.armL.rotation.set(0,0,0.7); }
+  if(P.lj){ b.armR.rotation.set(-1.0,0,-0.2); b.armL.rotation.set(-1.0,0,0.2); b.legR.rotation.set(0.6,0,0); b.legL.rotation.set(0.6,0,0); }
+  if(P.throwT>0){ const k=P.throwT/0.3; b.armR.rotation.set(-0.4-1.6*k*k,0,-0.3); }
   b.tail.rotation.set(Math.sin(clock*2.1)*0.08,Math.sin(clock*(2.5+3*w))*(0.22+0.15*w),Math.sin(clock*1.7)*0.06);
+}
+
+function attacking(){ return P.spin>0||P.slide>0; }
+
+/* ---------- tokkuri (sake bottle): pick one up for 3 throws (carry up to 5), then throw it at enemies ---------- */
+// A thrown bottle flies in an arc, homing a little toward the nearest enemy in front, and shatters on whatever
+// it hits: rat soldiers and crows go down in one hit, spike balls break, and the Rat King is stunned (or hurt if already dizzy).
+Object.assign(P,{tok:0,slide:0,lj:false,throwT:0});
+const TOK_MAX=5;
+const tokGeo=new THREE.LatheGeometry([[0,0],[0.2,0],[0.27,0.07],[0.31,0.2],[0.3,0.33],[0.23,0.45],[0.11,0.57],[0.075,0.68],[0.095,0.77],[0.1,0.8],[0,0.8]].map(p=>new THREE.Vector2(p[0],p[1])),20);
+const mTok=new THREE.MeshStandardMaterial({color:0xf3ecdc,roughness:0.3});
+const mTokBand=new THREE.MeshStandardMaterial({color:0x2c4a8a,roughness:0.4});
+function makeTok(){
+  const g=new THREE.Group(), b=new THREE.Mesh(tokGeo,mTok); b.castShadow=true; g.add(b);
+  const band=new THREE.Mesh(new THREE.CylinderGeometry(0.305,0.31,0.08,20,1,true),mTokBand); band.position.y=0.25; g.add(band);
+  const cord=new THREE.Mesh(new THREE.TorusGeometry(0.085,0.02,6,16),new THREE.MeshStandardMaterial({color:0xc0392b})); cord.rotation.x=Math.PI/2; cord.position.y=0.66; g.add(cord);
+  return g;
+}
+const tokItems=[], tokShots=[];
+[[4,24],[-10,6],[18,-14],[-5,-60],[30,14],[-40,52],[-55,68],[12,92],[-105,12],[-30,112],[58,22],[-20,-30],[0,-64]].forEach(([x,z])=>{
+  const g=makeTok(); g.scale.setScalar(1.5); scene.add(g);
+  const ring=new THREE.Mesh(new THREE.RingGeometry(0.55,0.75,24),new THREE.MeshBasicMaterial({color:0xffe08a,transparent:true,opacity:0.6,side:THREE.DoubleSide,depthWrite:false}));
+  ring.rotation.x=-Math.PI/2; scene.add(ring);
+  tokItems.push({g,ring,x,z,y:H(x,z),taken:false,back:0});
+});
+function throwTok(){
+  if(state!=='play'||P.tok<=0||P.throwT>0.12) return;
+  P.tok--; P.throwT=0.3; updateHud(); sfx.whoosh();
+  let fx=Math.sin(P.face), fz=Math.cos(P.face), best=null, bestD=19;
+  const consider=(x,y,z)=>{ const dx=x-P.x, dz=z-P.z, d=Math.hypot(dx,dz); if(d<1||d>bestD) return; if((dx*fx+dz*fz)/d<0.8) return; best={x,y,z}; bestD=d; };
+  for(const e of enemies) if(!e.dead) consider(e.x,e.y+0.9,e.z);
+  for(const c of crows) if(!c.dead) consider(c.x,c.y,c.z);
+  for(const b of spikers) if(!b.dead) consider(b.x,b.y,b.z);
+  if(boss.active&&!boss.defeated&&boss.state!=='dead') consider(boss.x,boss.y+2,boss.z);
+  const sx=P.x+fx*0.9, sy=P.y+1.9, sz=P.z+fz*0.9, G=24, SP=17;
+  let vx=fx*SP, vz=fz*SP, vy=6;
+  if(best){ const dx=best.x-sx, dz=best.z-sz, d=Math.hypot(dx,dz), t=Math.max(0.15,d/SP); vx=dx/t; vz=dz/t; vy=Math.min(14,Math.max(-4,(best.y-sy+0.5*G*t*t)/t)); }
+  const g=makeTok(); g.position.set(sx,sy,sz); scene.add(g);
+  tokShots.push({g,x:sx,y:sy,z:sz,vx,vy,vz,G,life:3});
+}
+function shatter(s){
+  s.dead=true; scene.remove(s.g); sfx.clink();
+  burst(s.x,s.y,s.z,0xf3ecdc,8); burst(s.x,s.y,s.z,0x2c4a8a,4);
+}
+function updateTokkuri(dt){
+  for(const it of tokItems){
+    if(it.taken){ it.back-=dt; if(it.back<=0){ it.taken=false; it.g.visible=it.ring.visible=true; } continue; }
+    it.g.position.set(it.x,it.y+0.5+Math.sin(clock*2.5+it.x)*0.15,it.z); it.g.rotation.y=clock*1.8;
+    it.ring.position.set(it.x,it.y+0.06,it.z); it.ring.material.opacity=0.35+0.25*Math.sin(clock*4);
+    if(state!=='play'||P.tok>=TOK_MAX) continue;
+    if(Math.hypot(P.x-it.x,P.z-it.z)<1.5&&Math.abs(P.y-it.y)<2.2){
+      it.taken=true; it.back=25; it.g.visible=it.ring.visible=false;
+      P.tok=Math.min(TOK_MAX,P.tok+3); sfx.pick(); toast(`徳利 ${P.tok}本`); updateHud();
+    }
+  }
+  for(let i=tokShots.length-1;i>=0;i--){
+    const s=tokShots[i];
+    s.vy-=s.G*dt; s.x+=s.vx*dt; s.y+=s.vy*dt; s.z+=s.vz*dt; s.life-=dt;
+    s.g.position.set(s.x,s.y,s.z); s.g.rotation.x+=dt*14; s.g.rotation.z+=dt*5;
+    const near=(x,y,z,r)=>{ const dx=s.x-x, dy=s.y-y, dz=s.z-z; return dx*dx+dy*dy+dz*dz<r*r; };
+    for(const e of enemies) if(!s.dead&&!e.dead&&near(e.x,e.y+0.9,e.z,1.35)){ killEnemy(e); sfx.stomp(); shatter(s); }
+    for(const c of crows) if(!s.dead&&!c.dead&&near(c.x,c.y,c.z,1.4)){ killCrow(c); shatter(s); }
+    for(const b of spikers) if(!s.dead&&!b.dead&&near(b.x,b.y,b.z,1.4)){
+      b.dead=true; b.g.visible=false; b.blob.visible=false; burst(b.x,b.y,b.z,0x3a3a44,14); toast('トゲボールをこわした！'); shatter(s);
+    }
+    if(!s.dead&&boss.active&&!boss.defeated&&boss.state!=='dead'&&Math.hypot(s.x-boss.x,s.z-boss.z)<2.3&&s.y>boss.y&&s.y<boss.y+4.2){
+      if(boss.state==='dizzy') bossDamage();
+      else if(boss.state!=='jump'&&boss.state!=='hurt'){ boss.state='dizzy'; boss.t=2.6; toast('フラフラ！'); sfx.stomp(); }
+      shatter(s);
+    }
+    if(!s.dead&&(s.life<=0||s.y<=floorAt(s.x,s.z,s.y+0.3).h)) shatter(s);
+    if(s.dead) tokShots.splice(i,1);
+  }
 }
 
 function stompOrHurt(cx,cy,cz,headY,onKill){
   // returns true if the cat touched this enemy
   if(P.vy<0&&P.y>headY-0.5){ onKill(); sfx.stomp(); P.vy=jumpHeld()?16:11; P.onGround=false; P.chain=1; return true; }
-  if(P.spin>0){ onKill(); sfx.stomp(); return true; }
+  if(attacking()){ onKill(); sfx.stomp(); return true; }
   hurt(cx,cz); return true;
 }
 function updateEnemies(dt){
@@ -1352,7 +1454,7 @@ function updateEnemies(dt){
     e.blob.position.set(e.x,e.y+0.04,e.z);
     if(!playing) continue;
     if(d<1.15&&P.y<e.y+1.7&&P.y+1.6>e.y) stompOrHurt(e.x,e.y,e.z,e.y+1.4,()=>killEnemy(e));
-    else if(P.spin>0&&d<1.9&&Math.abs(P.y-e.y)<1.2){ killEnemy(e); sfx.stomp(); }
+    else if(attacking()&&d<1.9&&Math.abs(P.y-e.y)<1.2){ killEnemy(e); sfx.stomp(); }
   }
   for(const c of crows){
     if(c.gone) continue;
@@ -1380,9 +1482,10 @@ function updateEnemies(dt){
     if(!playing) continue;
     const dx=P.x-c.x, dy=P.y+0.9-c.y, dz=P.z-c.z;
     if(dx*dx+dy*dy+dz*dz<1.3) stompOrHurt(c.x,c.y,c.z,c.y+0.2,()=>killCrow(c));
-    else if(P.spin>0&&dx*dx+dz*dz<3.4&&Math.abs(dy)<1.3) killCrow(c);
+    else if(attacking()&&dx*dx+dz*dz<3.4&&Math.abs(dy)<1.3) killCrow(c);
   }
   for(const b of spikers){
+    if(b.dead) continue;
     b.u+=b.dir*dt*4.5/b.len; if(b.u>1){ b.u=1; b.dir=-1; } if(b.u<0){ b.u=0; b.dir=1; }
     b.x=b.ax+(b.bx-b.ax)*b.u; b.z=b.az+(b.bz-b.az)*b.u; b.y=H(b.x,b.z)+0.75;
     b.g.position.set(b.x,b.y,b.z); b.g.rotation.y=Math.atan2(b.bx-b.ax,b.bz-b.az);
@@ -1512,12 +1615,12 @@ function updateBoss(dt){
         if(b.state==='dizzy'){ bossDamage(); P.vy=17; }
         else { P.vy=14; sfx.stomp(); if(b.bounceT<=0){ toast('かたい！'); b.bounceT=1.5; } }
         P.onGround=false; P.chain=1; P.pound=false;
-      } else if(P.spin>0&&b.state==='dizzy'){ bossDamage(); }
+      } else if(attacking()&&b.state==='dizzy'){ bossDamage(); }
       else if(dP<2.1&&P.y<b.y+head-0.3){
         const d=dP||1; P.x=b.x+(P.x-b.x)/d*2.1; P.z=b.z+(P.z-b.z)/d*2.1;
         hurt(b.x,b.z);
       }
-    } else if(P.spin>0&&b.state==='dizzy'&&dP<2.7&&Math.abs(P.y-b.y)<1.5) bossDamage();
+    } else if(attacking()&&b.state==='dizzy'&&dP<2.7&&Math.abs(P.y-b.y)<1.5) bossDamage();
   }
   for(let i=waves.length-1;i>=0;i--){
     const w=waves[i]; w.r+=10*dt; w.m.scale.set(w.r,1,w.r); w.m.material.opacity=Math.max(0,0.9*(1-w.r/ARENA.r));
@@ -1550,6 +1653,7 @@ function drawMinimap(){
   x.moveTo(px+fx*11,pz+fz*11); x.lineTo(px-fx*6+fz*7,pz-fz*6-fx*7); x.lineTo(px-fx*6-fz*7,pz-fz*6+fx*7); x.closePath(); x.fill(); x.stroke();
 }
 function updateHud(){
+  $('hTok').textContent=P.tok; $('hTokWrap').hidden=P.tok===0; $('cCount').textContent=P.tok; $('btnC').classList.toggle('empty',P.tok===0);
   $('hStars').textContent=save.stars.length;
   $('hCoins').textContent=coinCount;
   $('hRed').textContent=redCount; $('hRedWrap').hidden=redCount===0;
@@ -1602,7 +1706,7 @@ function frame(now){
   if(state==='figure'){ renderFigure(dt); requestAnimationFrame(frame); return; }
   if(state==='play') updatePlayer(dt);
   else if(P.stand&&P.stand.moving){ P.x+=P.stand.dx; P.y+=P.stand.dy; P.z+=P.stand.dz; }
-  animateCat(dt); animatePaper(dt); animatePhoto(dt); updateEnemies(dt); updateBoss(dt); updateCoins(dt); updateStars(dt); updateParticles(dt); updateCam(dt);
+  animateCat(dt); animatePaper(dt); animatePhoto(dt); updateEnemies(dt); updateTokkuri(dt); updateBoss(dt); updateCoins(dt); updateStars(dt); updateParticles(dt); updateCam(dt);
   water.position.y=-0.3+Math.sin(clock*0.8)*0.08;
   if(Math.floor(clock*10)!==Math.floor((clock-dt)*10)) drawMinimap();
   waveTex.offset.set(clock*0.012,clock*0.007); sky.position.copy(camera.position);
